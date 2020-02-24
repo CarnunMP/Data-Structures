@@ -1,6 +1,7 @@
 import sys
-sys.path.append('../doubly_linked_list')
-from doubly_linked_list import DoublyLinkedList
+sys.path.append('C:\\Lambda\\CS\\Afternoon Projects\\Data-Structures\\doubly_linked_list')
+print(sys.path)
+from doubly_linked_list.doubly_linked_list import DoublyLinkedList
 
 
 class Queue:
