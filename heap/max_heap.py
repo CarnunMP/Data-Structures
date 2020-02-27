@@ -14,15 +14,22 @@ class Heap:
         # check that it's smaller than its parent
         inserted_node_index = len(self.storage) - 1
         parent_node_index = self.get_parent_index(inserted_node_index)
+        # swapping = True
         while self.storage[inserted_node_index] > self.storage[parent_node_index] and parent_node_index >= 0:
+        #     swapping: 
         # if not, swap them, and check again
             temp = self.storage[parent_node_index]
             self.storage[parent_node_index] = self.storage[inserted_node_index]
             self.storage[inserted_node_index] = temp
+            # swapping = self._bubble_up(inserted_node_index)
 
             inserted_node_index = parent_node_index
+            #                     self.get_parent_index(inserted_node_index)
             parent_node_index = self.get_parent_index(inserted_node_index)
+
         # if it is, stop
+        # (Call bubble_up, for test...?)
+        self._bubble_up(0)
 
     def delete(self):
         # swap first element with last
@@ -37,32 +44,50 @@ class Heap:
         # if it's not, swap it with the larger child
         # now check it against its children, and so on...
         index_to_check = 0
-        child_indices = self.get_child_indices(index_to_check)
-        while (child_indices[0] < len(self.storage) and child_indices[1] < len(self.storage)) and \
-              (self.storage[index_to_check] < self.storage[child_indices[0]] or 
-              self.storage[index_to_check] < self.storage[child_indices[1]]):
-            max_child_index = child_indices[0] if self.storage[child_indices[0]] >= self.storage[child_indices[1]] else child_indices[1]
-
-            temp = self.storage[index_to_check]
-            self.storage[index_to_check] = self.storage[max_child_index]
-            self.storage[max_child_index] = temp
-
-            index_to_check = max_child_index
-            child_indices = self.get_child_indices(index_to_check)
+        # child_indices = self.get_child_indices(index_to_check)
+        while index_to_check != None:
+        # (child_indices[0] < len(self.storage) and child_indices[1] < len(self.storage)) and \
+            #   (self.storage[index_to_check] < self.storage[child_indices[0]] or 
+            #   self.storage[index_to_check] < self.storage[child_indices[1]]):
+            index_to_check = self._sift_down(index_to_check)
+            # child_indices = self.get_child_indices(index_to_check)
         
         return first
 
     def get_max(self):
-        pass
+        return self.storage[0]
 
     def get_size(self):
         return len(self.storage)
 
     def _bubble_up(self, index):
-        pass
+        parent_index = self.get_parent_index(index)
+
+        if parent_index < 0:
+            return
+
+        if self.storage[parent_index] < self.storage[index]:
+            temp = self.storage[parent_index]
+            self.storage[parent_index] = self.storage[index]
+            self.storage[index] = temp
+            return True
+        
+        return False
 
     def _sift_down(self, index):
-        pass
+        child_indices = self.get_child_indices(index)
+        if child_indices[0] >= len(self.storage) and child_indices[1] >= len(self.storage):
+            return
+        
+        max_child_index = None
+        if child_indices[1] >= len(self.storage):
+            max_child_index = child_indices[0]
+        else:
+            max_child_index = child_indices[0] if self.storage[child_indices[0]] >= self.storage[child_indices[1]] else child_indices[1]
+        
+        self._bubble_up(max_child_index)
+
+        return max_child_index
 
     # helpers
     def get_parent_index(self, index):
