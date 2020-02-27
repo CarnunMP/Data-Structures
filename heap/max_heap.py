@@ -13,7 +13,7 @@ class Heap:
         self.storage.append(value)
         # check that it's smaller than its parent
         inserted_node_index = len(self.storage) - 1
-        parent_node_index = (inserted_node_index - 1) // 2 if inserted_node_index % 2 == 1 else (inserted_node_index - 2) // 2
+        parent_node_index = self.get_parent_node(inserted_node_index)
         while self.storage[inserted_node_index] > self.storage[parent_node_index] and parent_node_index >= 0:
         # if not, swap them, and check again
             temp = self.storage[parent_node_index]
@@ -21,7 +21,7 @@ class Heap:
             self.storage[inserted_node_index] = temp
 
             inserted_node_index = parent_node_index
-            parent_node_index = (inserted_node_index - 1) // 2 if inserted_node_index % 2 == 1 else (inserted_node_index - 2) // 2
+            parent_node_index = self.get_parent_node(inserted_node_index)
         # if it is, stop
 
     def delete(self):
@@ -38,3 +38,7 @@ class Heap:
 
     def _sift_down(self, index):
         pass
+
+    # helpers
+    def get_parent_node(self, index):
+        return (index - 1) // 2 if index % 2 == 1 else (index - 2) // 2
